@@ -1,0 +1,12 @@
+{% extends 'drive/base.html' %}
+
+{% block title %} Create Folder {% endblock %}
+
+{% block content %}
+    <h1>Create a New Folder {% if parent_folder %} inside "{{ parent_folder.name }}" {% else %} (Root Folder) {% endif %}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Folder</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folder Detail</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fa;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .container {
+            margin: 40px auto;
+            max-width: 900px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative; /* Important for absolute positioning of the logout button */
+        }
+
+        /* Logout Button Styling */
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+
+        /* Back Button */
+        .back-btn {
+            font-size: 1.5rem;
+            color: #007bff;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            text-decoration: dashed;
+        }
+
+        /* Folder & File List */
+        .folder-list, .file-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .folder-list li, .file-list li {
+            padding: 12px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .folder-list li:hover, .file-list li:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Links */
+        .folder-list a, .file-list a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .folder-list a:hover, .file-list a:hover {
+            text-decoration: underline;
+        }
+
+        /* Action Buttons */
+        .action-buttons a {
+            color: #ffc107;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+
+        .action-buttons a:hover {
+            text-decoration: underline;
+        }
+
+        /* Create Folder Button Styling */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .buttons button {
+            padding: 12px 20px;
+            margin-right: 15px;
+            font-size: 1.1rem;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .buttons .folder-btn {
+            background-color: #28a745;
+        }
+
+        .buttons .folder-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Content Section Styling */
+        .content {
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative; /* Keep for positioning logout button */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Container for Folder Details -->
+    <div class="container">
+        <!-- Logout Button -->
+        <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Logout</button>
+        
+        <!-- Folder Header -->
+        <h1>Folder: {% if folder %}{{ folder.name }}{% else %}Root{% endif %}</h1>
+        
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+
+        <!-- Back Button -->
+        {% if folder and folder.parent %}
+            <a href="{% url 'folder_list' folder.parent.id %}" class="back-btn">&#8617; Back</a>
+        {% endif %}
+
+        <!-- Folder List -->
+        <ul class="folder-list">
+            {% if subfolders %}
+                {% for subfolder in subfolders %}
+                    <li>
+                        <a href="{% url 'folder_list' subfolder.id %}">{{ subfolder.name }}</a>
+                        <div class="action-buttons">
+                            <a href="{% url 'rename_folder' subfolder.id %}">Rename</a>
+                            <a href="{% url 'delete_folder' subfolder.id %}">Delete</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li>No subfolders available.</li>
+            {% endif %}
+        </ul>
+
+        <!-- Create Folder Button -->
+        <div class="buttons">
+            <button class="folder-btn" onclick="window.location.href='{% url 'create_folder' folder.id %}'">Create Folder</button>
+        </div>
+    </div>
+
+</body>
+</html>

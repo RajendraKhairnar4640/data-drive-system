@@ -1,0 +1,35 @@
+{% extends 'drive/base.html' %}
+
+{% block content %}
+<!-- Signup Page Section -->
+<div class="signup-container">
+    <h2>Create Your Account</h2>
+    <form method="POST" class="signup-form">
+        {% csrf_token %}
+        
+        <!-- Form Fields -->
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.password.id_for_label }}">Password</label>
+            {{ form.password }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.confirm_password.id_for_label }}">Confirm Password</label>
+            {{ form.confirm_password }}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-submit">Register</button>
+    </form>
+
+    <p class="already-have-account">Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
+</div>
+
+{% endblock %}
